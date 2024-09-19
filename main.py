@@ -19,9 +19,6 @@ def generate_password():
     shuffle(password_list)
 
     password = "".join(password_list)
-    # password = ""
-    # for char in password_list:
-    #   password += char
 
     password_input.insert(0, password)
     pyperclip.copy(password)
@@ -62,6 +59,22 @@ def save():
             email_input.delete(0, END)
             password_input.delete(0, END)
 
+# ---------------------------- search password ------------------------------- #
+def search_password():
+    website = website_input.get()
+    try:
+        with open("data.json") as data_file:
+            data=json.load(data_file)
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
+        messagebox.showinfo("Error", "No Data File Found")
+    else:
+        if website in data:
+            email = data[website]["email"]
+            password = data[website]["password"]
+            messagebox.showinfo("website", f"Email: {email}\nPassword: {password}")
+        else:
+            messagebox.showinfo("Error", f"There are no details for {website} exists")
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
@@ -78,8 +91,8 @@ website_label = Label(window, text="Website:")
 website_label.grid(column=0, row=1)
 
 #website entry
-website_input = Entry(width=35)
-website_input.grid(column=1, row=1, columnspan=2, sticky=EW)
+website_input = Entry(width=21)
+website_input.grid(column=1, row=1, sticky=EW)
 
 #email/username label
 email_label = Label(window, text="Email/Username:")
@@ -100,6 +113,10 @@ password_input.grid(column=1, row=3, sticky=EW)
 #generate button
 generate_button = Button(text="Generate Password", command=generate_password)
 generate_button.grid(column=2, row=3, sticky=EW)
+
+#search button
+search_button = Button(text="Search", command=search_password)
+search_button.grid(column=2, row=1, sticky=EW)
 
 #Add button
 add_button=Button(window, text="Add", width=36, command=save)
