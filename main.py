@@ -3,6 +3,16 @@ from tkinter import *
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+def save():
+    website = website_input.get()
+    email = email_input.get()
+    password = password_input.get()
+
+    with open("data.text", "a") as data_file:
+        data_file.write(f"{website} | {email} | {password}\n")
+        website_input.delete(0, END)
+        email_input.delete(0, END)
+        password_input.delete(0, END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 
